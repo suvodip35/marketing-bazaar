@@ -3,45 +3,26 @@ import React from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
-
-// Sample product data
-const featuredProducts = [
-  {
-    id: "B09G9FPHY6",
-    title: "Apple AirPods Pro (2nd Generation) Wireless Earbuds",
-    image: "https://m.media-amazon.com/images/I/71bhWgQK-cL._AC_SL1500_.jpg",
-    rating: 4.7,
-    price: "$249.00",
-    description: "Active Noise Cancellation reduces unwanted background noise. Adaptive Transparency lets outside sounds in while reducing loud environmental noise.",
-    badge: "Best Seller"
-  },
-  {
-    id: "B0CHX3QBCH",
-    title: "Amazon Fire TV Stick 4K streaming device",
-    image: "https://m.media-amazon.com/images/I/51cYet1f5QL._AC_SL1000_.jpg",
-    rating: 4.6,
-    price: "$49.99",
-    description: "Our most powerful streaming stick - 30% more powerful than Fire TV Stick 4K Max (2021), with faster app starts and more fluid navigation."
-  },
-  {
-    id: "B0BSL1JPZW",
-    title: "Sony WH-1000XM5 Wireless Noise Canceling Headphones",
-    image: "https://m.media-amazon.com/images/I/61+btxzpfDL._AC_SL1500_.jpg",
-    rating: 4.5,
-    price: "$398.00",
-    description: "Industry Leading noise cancellation-two processors control 8 microphones for unprecedented noise cancellation."
-  },
-  {
-    id: "B07ZPML7NP",
-    title: "Kindle Paperwhite 16 GB – Now with a 6.8\" display",
-    image: "https://m.media-amazon.com/images/I/61Ww4abGclL._AC_SL1000_.jpg",
-    rating: 4.8,
-    price: "$149.99",
-    description: "Kindle Paperwhite – Now with a 6.8\" display and thinner borders, adjustable warm light, up to 10 weeks of battery life."
-  }
-];
+import { useFeaturedProducts } from "@/services/productService";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const FeaturedProducts = () => {
+  const { products, loading, error } = useFeaturedProducts();
+
+  // Function to render skeleton placeholders during loading
+  const renderSkeletons = () => {
+    return Array(4).fill(0).map((_, i) => (
+      <div key={i} className="flex flex-col space-y-3">
+        <Skeleton className="h-48 w-full rounded-md" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-1/2" />
+        </div>
+      </div>
+    ));
+  };
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -55,19 +36,27 @@ const FeaturedProducts = () => {
           </Link>
         </div>
         
+        {error && (
+          <div className="text-red-500 mb-4 p-3 bg-red-50 rounded-md">
+            {error}
+          </div>
+        )}
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              image={product.image}
-              rating={product.rating}
-              price={product.price}
-              description={product.description}
-              badge={product.badge}
-            />
-          ))}
+          {loading ? renderSkeletons() : (
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                id={product.id}
+                title={product.title}
+                image={product.image}
+                rating={product.rating}
+                price={product.price}
+                description={product.description}
+                badge={product.badge}
+              />
+            ))
+          )}
         </div>
       </div>
     </section>
