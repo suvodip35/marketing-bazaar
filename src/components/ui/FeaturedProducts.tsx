@@ -33,11 +33,11 @@ const featuredProducts = [
   },
   {
     id: "B07ZPML7NP",
-    title: "Kindle Paperwhite 16 GB – Now with a 6.8" display",
+    title: "Kindle Paperwhite 16 GB – Now with a 6.8\" display",
     image: "https://m.media-amazon.com/images/I/61Ww4abGclL._AC_SL1000_.jpg",
     rating: 4.8,
     price: "$149.99",
-    description: "Kindle Paperwhite – Now with a 6.8" display and thinner borders, adjustable warm light, up to 10 weeks of battery life."
+    description: "Kindle Paperwhite – Now with a 6.8\" display and thinner borders, adjustable warm light, up to 10 weeks of battery life."
   }
 ];
 
