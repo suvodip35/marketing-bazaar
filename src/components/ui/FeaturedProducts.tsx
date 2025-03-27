@@ -2,26 +2,11 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import ProductCard from "./ProductCard";
 import { useFeaturedProducts } from "@/services/productService";
-import { Skeleton } from "@/components/ui/skeleton";
+import ProductGrid from "./ProductGrid";
 
 const FeaturedProducts = () => {
   const { products, loading, error } = useFeaturedProducts();
-
-  // Function to render skeleton placeholders during loading
-  const renderSkeletons = () => {
-    return Array(4).fill(0).map((_, i) => (
-      <div key={i} className="flex flex-col space-y-3">
-        <Skeleton className="h-48 w-full rounded-md" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-1/2" />
-        </div>
-      </div>
-    ));
-  };
 
   return (
     <section className="py-16 bg-white">
@@ -36,28 +21,12 @@ const FeaturedProducts = () => {
           </Link>
         </div>
         
-        {error && (
-          <div className="text-red-500 mb-4 p-3 bg-red-50 rounded-md">
-            {error}
-          </div>
-        )}
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {loading ? renderSkeletons() : (
-            products.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                title={product.title}
-                image={product.image}
-                rating={product.rating}
-                price={product.price}
-                description={product.description}
-                badge={product.badge}
-              />
-            ))
-          )}
-        </div>
+        <ProductGrid 
+          products={products}
+          loading={loading}
+          error={error}
+          emptyMessage="No featured products available at this time."
+        />
       </div>
     </section>
   );
