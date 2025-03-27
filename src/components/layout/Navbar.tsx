@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Menu } from "lucide-react";
+import { Search, Menu, BookOpen, BarChart3 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
@@ -33,6 +33,9 @@ const Navbar = () => {
             <Link to="/" className="text-gray-700 hover:text-primary">
               Home
             </Link>
+            <Link to="/products" className="text-gray-700 hover:text-primary">
+              Products
+            </Link>
             <Link to="/reviews" className="text-gray-700 hover:text-primary">
               Reviews
             </Link>
@@ -40,7 +43,16 @@ const Navbar = () => {
               Best Deals
             </Link>
             <Link to="/guides" className="text-gray-700 hover:text-primary">
-              Buying Guides
+              <span className="flex items-center">
+                <BookOpen className="h-4 w-4 mr-1" />
+                Buying Guides
+              </span>
+            </Link>
+            <Link to="/compare" className="text-gray-700 hover:text-primary">
+              <span className="flex items-center">
+                <BarChart3 className="h-4 w-4 mr-1" />
+                Compare
+              </span>
             </Link>
           </div>
 
@@ -68,6 +80,9 @@ const Navbar = () => {
                 <Link to="/" className="text-gray-700 hover:text-primary">
                   Home
                 </Link>
+                <Link to="/products" className="text-gray-700 hover:text-primary">
+                  Products
+                </Link>
                 <Link to="/reviews" className="text-gray-700 hover:text-primary">
                   Reviews
                 </Link>
@@ -75,7 +90,16 @@ const Navbar = () => {
                   Best Deals
                 </Link>
                 <Link to="/guides" className="text-gray-700 hover:text-primary">
-                  Buying Guides
+                  <span className="flex items-center">
+                    <BookOpen className="h-4 w-4 mr-1" />
+                    Buying Guides
+                  </span>
+                </Link>
+                <Link to="/compare" className="text-gray-700 hover:text-primary">
+                  <span className="flex items-center">
+                    <BarChart3 className="h-4 w-4 mr-1" />
+                    Compare Products
+                  </span>
                 </Link>
               </div>
             </SheetContent>
