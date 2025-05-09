@@ -1,243 +1,137 @@
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-// Sample product data
-const products = [
-  {
-    id: "B09G9FPHY6",
-    title: "Sony WH-1000XM4 Wireless Noise Cancelling Headphones",
-    description: "Industry-leading noise cancellation with Dual Noise Sensor technology. Next-level music with Edge-AI and DSEE Extreme upscaling. Up to 30-hour battery life with quick charging.",
-    price: "$348.00",
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-    badge: "Best Seller"
-  },
-  {
-    id: "B08L5TNJHG",
-    title: "Apple Watch Series 6 (GPS, 44mm)",
-    description: "Measure your blood oxygen with an all-new sensor and app. Track your daily activity on Apple Watch and see your trends in the Fitness app on iPhone.",
-    price: "$399.99",
-    rating: 4.8,
-    image: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
-  },
-  {
-    id: "B0CHX3QBCH",
-    title: "SAMSUNG 65-Inch Class OLED 4K S90C Series Quantum HDR",
-    description: "Catch all the details with Neural Quantum Processor with 4K Upscaling that enhances all your content to 4K resolution. Dolby Atmos & Object Tracking Sound Lite deliver immersive surround sound.",
-    price: "$1,597.99",
-    rating: 4.6,
-    image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    badge: "New"
-  },
-  {
-    id: "B07ZPKBL9V",
-    title: "Kindle Paperwhite (8 GB) – Now with a 6.8\" display",
-    description: "The thinnest, lightest Kindle Paperwhite yet—with a flush-front design and 300 ppi glare-free display that reads like real paper even in bright sunlight.",
-    price: "$139.99",
-    rating: 4.5,
-    image: "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-  },
-  {
-    id: "B08DFPV6S7",
-    title: "COSORI Air Fryer 5.8QT",
-    description: "13 convenient cooking functions with a temperature range of 170–400°F. Cook faster than a conventional oven and save electricity. The removable, dishwasher-safe baskets and nonstick surfaces make cleanup simple.",
-    price: "$99.99",
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1612883597313-0e30409bb7f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    badge: "Sale"
-  },
-  {
-    id: "B07JW9H4J1",
-    title: "Logitech MX Master 3 Advanced Wireless Mouse",
-    description: "Ultra-fast and precise scrolling with electromagnetic MagSpeed Wheel. App-specific customizations for increased workflow efficiency. Ergonomic design with intuitive controls.",
-    price: "$99.99",
-    rating: 4.8,
-    image: "https://images.unsplash.com/photo-1629429407756-57d4bcd0d0ee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-  },
-  {
-    id: "B081FPD65C",
-    title: "LG 27GL83A-B 27 Inch Ultragear QHD IPS 1ms Monitor",
-    description: "27 inch QHD (2560 x 1440) IPS display with 144Hz refresh rate. NVIDIA G-SYNC Compatible with AMD FreeSync Premium. Dynamic Action Sync optimized for gaming.",
-    price: "$299.99",
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1616763355548-1b606f439f86?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-  },
-  {
-    id: "B07TD52664",
-    title: "Anker PowerCore 26800 Portable Charger",
-    description: "Enormous 26800mAh capacity able to charge most phones over 6 times. Charge 3 devices simultaneously with the PowerIQ technology. Safe design with surge protection and temperature control.",
-    price: "$69.99",
-    rating: 4.6,
-    image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80"
-  }
-];
-
-// Mock API hook for featured products
-export function useFeaturedProducts() {
+// We'll use this hook to fetch featured products
+export const useFeaturedProducts = () => {
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  useEffect(() => {
-    // Simulate API delay
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
-  // Return the first 4 products as featured
-  return { products: products.slice(0, 4), loading, error };
-}
 
-// Mock API hook for product detail
-export function useProductDetail(productId) {
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
   useEffect(() => {
-    // Simulate API call
-    const timer = setTimeout(() => {
-      const foundProduct = products.find(p => p.id === productId);
-      if (foundProduct) {
-        setProduct(foundProduct);
-      } else {
-        setError("Product not found");
-      }
-      setLoading(false);
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, [productId]);
-  
-  return { product, loading, error };
-}
-
-// Mock API hook for searching products
-export function useProductSearch(query, category, sortBy) {
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  useEffect(() => {
-    setLoading(true);
-    
-    // Simulate API call
-    const timer = setTimeout(() => {
+    const fetchProducts = async () => {
       try {
-        let filtered = [...products];
+        setLoading(true);
+        // In a real implementation, this would hit a secure backend endpoint
+        // that manages the PA API calls using your credentials
         
-        // Filter by search query
-        if (query) {
-          const searchTerm = query.toLowerCase();
-          filtered = filtered.filter(product => 
-            product.title.toLowerCase().includes(searchTerm) || 
-            product.description.toLowerCase().includes(searchTerm)
-          );
-        }
+        // For now, we'll simulate an API call with a delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // Filter by category
-        if (category && category !== 'all') {
-          // This is a simplified category filter - in a real app you'd have category data
-          filtered = filtered.filter(product => 
-            product.title.toLowerCase().includes(category.toLowerCase())
-          );
-        }
-        
-        // Sort products
-        if (sortBy) {
-          switch(sortBy) {
-            case 'price-low':
-              filtered.sort((a, b) => parseFloat(a.price.replace('$', '')) - parseFloat(b.price.replace('$', '')));
-              break;
-            case 'price-high':
-              filtered.sort((a, b) => parseFloat(b.price.replace('$', '')) - parseFloat(a.price.replace('$', '')));
-              break;
-            case 'rating':
-              filtered.sort((a, b) => b.rating - a.rating);
-              break;
-            default:
-              // Default sort by newest (using id as proxy)
-              filtered.sort((a, b) => b.id.localeCompare(a.id));
+        // Sample data
+        setProducts([
+          {
+            id: "B09G9FPHY6",
+            title: "Apple AirPods Pro (2nd Generation) Wireless Earbuds",
+            image: "https://m.media-amazon.com/images/I/71bhWgQK-cL._AC_SL1500_.jpg",
+            rating: 4.7,
+            price: "$249.00",
+            description: "Active Noise Cancellation reduces unwanted background noise. Adaptive Transparency lets outside sounds in while reducing loud environmental noise.",
+            badge: "Best Seller"
+          },
+          {
+            id: "B0CHX3QBCH",
+            title: "Amazon Fire TV Stick 4K streaming device",
+            image: "https://m.media-amazon.com/images/I/51cYet1f5QL._AC_SL1000_.jpg",
+            rating: 4.6,
+            price: "$49.99",
+            description: "Our most powerful streaming stick - 30% more powerful than Fire TV Stick 4K Max (2021), with faster app starts and more fluid navigation."
+          },
+          {
+            id: "B0BSL1JPZW",
+            title: "Sony WH-1000XM5 Wireless Noise Canceling Headphones",
+            image: "https://m.media-amazon.com/images/I/61+btxzpfDL._AC_SL1500_.jpg",
+            rating: 4.5,
+            price: "$398.00",
+            description: "Industry Leading noise cancellation-two processors control 8 microphones for unprecedented noise cancellation."
+          },
+          {
+            id: "B07ZPML7NP",
+            title: "Kindle Paperwhite 16 GB – Now with a 6.8\" display",
+            image: "https://m.media-amazon.com/images/I/61Ww4abGclL._AC_SL1000_.jpg",
+            rating: 4.8,
+            price: "$149.99",
+            description: "Kindle Paperwhite – Now with a 6.8\" display and thinner borders, adjustable warm light, up to 10 weeks of battery life."
           }
-        }
-        
-        setResults(filtered);
-        setLoading(false);
+        ]);
       } catch (err) {
-        setError("Error searching products");
+        console.error("Error fetching featured products:", err);
+        setError("Failed to load featured products. Please try again.");
+      } finally {
         setLoading(false);
       }
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, [query, category, sortBy]);
-  
-  return { products: results, loading, error };
-}
+    };
 
-// Function to get comparable products
-export function useCompareProducts(productIds) {
-  const [compareProducts, setCompareProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    fetchProducts();
+  }, []);
 
-  useEffect(() => {
-    setLoading(true);
-    
-    // Simulate API call
-    const timer = setTimeout(() => {
-      try {
-        if (productIds && productIds.length > 0) {
-          const found = products.filter(p => productIds.includes(p.id));
-          setCompareProducts(found);
-        } else {
-          setCompareProducts([]);
-        }
-        setLoading(false);
-      } catch (err) {
-        setError("Error fetching products to compare");
-        setLoading(false);
-      }
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, [productIds]);
+  return { products, loading, error };
+};
 
-  return { products: compareProducts, loading, error };
-}
-
-// Mock deals data
-export function useDeals() {
+// Hook for fetching deals
+export const useDeals = () => {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulate API call
-    const timer = setTimeout(() => {
+    const fetchDeals = async () => {
       try {
-        // Add discount info to some products
-        const dealsData = products
-          .slice(0, 6)
-          .map(product => ({
-            ...product,
-            originalPrice: `$${(parseFloat(product.price.replace('$', '')) * 1.2).toFixed(2)}`,
-            discount: '20% OFF',
-            endsIn: '2 days'
-          }));
-          
-        setDeals(dealsData);
-        setLoading(false);
+        setLoading(true);
+        
+        // For now, we'll simulate an API call with a delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Sample data
+        setDeals([
+          {
+            id: "B09G9FPHY6",
+            title: "Apple AirPods Pro (2nd Generation) Wireless Earbuds",
+            image: "https://m.media-amazon.com/images/I/71bhWgQK-cL._AC_SL1500_.jpg",
+            rating: 4.7,
+            price: "$249.00",
+            description: "Active Noise Cancellation reduces unwanted background noise. Adaptive Transparency lets outside sounds in while reducing loud environmental noise.",
+            originalPrice: "$249.00",
+            salePrice: "$189.99",
+            discount: "24%",
+            endTime: "2025-06-01T00:00:00Z",
+            badge: "Limited Time Deal"
+          },
+          {
+            id: "B08TQPBMJN",
+            title: "Logitech MX Master 3S - Wireless Mouse",
+            image: "https://m.media-amazon.com/images/I/614w3LuZTYL._AC_SL1500_.jpg",
+            rating: 4.7,
+            price: "$99.99",
+            description: "Ergonomic design with ultra-fast scrolling and precise tracking on any surface, even glass.",
+            originalPrice: "$99.99",
+            salePrice: "$79.99",
+            discount: "20%",
+            endTime: "2025-06-04T00:00:00Z",
+            badge: "Best Seller"
+          },
+          {
+            id: "B07V4GCFP9",
+            title: "Instant Pot Duo Plus 9-in-1 Electric Pressure Cooker",
+            image: "https://m.media-amazon.com/images/I/71V1LrY1MSL._AC_SL1500_.jpg",
+            rating: 4.6,
+            price: "$99.95",
+            description: "9-in-1 functionality: pressure cook, slow cook, rice cooker, yogurt maker, steamer, sauté pan, yogurt maker, sterilizer and food warmer.",
+            originalPrice: "$149.99",
+            salePrice: "$99.95",
+            discount: "33%",
+            endTime: "2025-05-30T00:00:00Z"
+          }
+        ]);
       } catch (err) {
-        setError("Error fetching deals");
+        console.error("Error fetching deals:", err);
+        setError("Failed to load deals. Please try again.");
+      } finally {
         setLoading(false);
       }
-    }, 1000);
-    
-    return () => clearTimeout(timer);
+    };
+
+    fetchDeals();
   }, []);
 
   return { deals, loading, error };
-}
+};

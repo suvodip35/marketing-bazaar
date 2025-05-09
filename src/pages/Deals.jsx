@@ -10,9 +10,8 @@ import { Star, Clock, Percent, ArrowRight } from "lucide-react";
 import { useDeals } from "@/services/productService";
 import ProductGrid from "@/components/ui/ProductGrid";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Deal } from "@/services/productService";
 
-const formatTimeRemaining = (endTimeStr: string) => {
+const formatTimeRemaining = (endTimeStr) => {
   const endTime = new Date(endTimeStr);
   const now = new Date();
   const diff = endTime.getTime() - now.getTime();
@@ -30,7 +29,7 @@ const formatTimeRemaining = (endTimeStr: string) => {
   }
 };
 
-const DealCard = ({ deal }: { deal: Deal }) => {
+const DealCard = ({ deal }) => {
   return (
     <Card className="h-full flex flex-col transition-all duration-200 hover:shadow-md overflow-hidden">
       <div className="relative">

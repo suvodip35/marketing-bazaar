@@ -13,16 +13,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-interface ProductCardProps {
-  id: string;
-  title: string;
-  image: string;
-  rating: number;
-  price: string;
-  description: string;
-  badge?: string;
-}
-
 const ProductCard = ({ 
   id, 
   title, 
@@ -31,7 +21,7 @@ const ProductCard = ({
   price, 
   description, 
   badge 
-}: ProductCardProps) => {
+}) => {
   return (
     <Card className="h-full flex flex-col transition-all duration-200 hover:shadow-md">
       <div className="relative">

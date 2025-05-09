@@ -1,8 +1,6 @@
 
-import { Product } from './productService';
-
 // This simulates searching products from a database or API
-export const searchProducts = async (query: string): Promise<Product[]> => {
+export const searchProducts = async (query) => {
   // In production, this would be a call to your backend API
   // that interfaces with Amazon PA API
   
@@ -20,7 +18,7 @@ export const searchProducts = async (query: string): Promise<Product[]> => {
 };
 
 // Sample product data for search results
-const sampleProducts: Product[] = [
+const sampleProducts = [
   {
     id: "B09G9FPHY6",
     title: "Apple AirPods Pro (2nd Generation) Wireless Earbuds",

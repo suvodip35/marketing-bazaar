@@ -1,17 +1,9 @@
 
 import React from "react";
-import { Product } from "@/services/productService";
 import ProductCard from "./ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface ProductGridProps {
-  products: Product[];
-  loading: boolean;
-  error: string | null;
-  emptyMessage?: string;
-}
-
-const ProductGrid = ({ products, loading, error, emptyMessage = "No products found" }: ProductGridProps) => {
+const ProductGrid = ({ products, loading, error, emptyMessage = "No products found" }) => {
   // Function to render skeleton placeholders during loading
   const renderSkeletons = () => {
     return Array(4).fill(0).map((_, i) => (

@@ -9,7 +9,7 @@ const NewsletterSection = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!email) {
       toast.error("Please enter your email address");
