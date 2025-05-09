@@ -26,7 +26,8 @@ const sampleProducts = [
     rating: 4.7,
     price: "$249.00",
     description: "Active Noise Cancellation reduces unwanted background noise. Adaptive Transparency lets outside sounds in while reducing loud environmental noise.",
-    badge: "Best Seller"
+    badge: "Best Seller",
+    category: "electronics"
   },
   {
     id: "B0CHX3QBCH",
@@ -34,7 +35,8 @@ const sampleProducts = [
     image: "https://m.media-amazon.com/images/I/51cYet1f5QL._AC_SL1000_.jpg",
     rating: 4.6,
     price: "$49.99",
-    description: "Our most powerful streaming stick - 30% more powerful than Fire TV Stick 4K Max (2021), with faster app starts and more fluid navigation."
+    description: "Our most powerful streaming stick - 30% more powerful than Fire TV Stick 4K Max (2021), with faster app starts and more fluid navigation.",
+    category: "electronics"
   },
   {
     id: "B0BSL1JPZW",
@@ -42,7 +44,8 @@ const sampleProducts = [
     image: "https://m.media-amazon.com/images/I/61+btxzpfDL._AC_SL1500_.jpg",
     rating: 4.5,
     price: "$398.00",
-    description: "Industry Leading noise cancellation-two processors control 8 microphones for unprecedented noise cancellation."
+    description: "Industry Leading noise cancellation-two processors control 8 microphones for unprecedented noise cancellation.",
+    category: "electronics"
   },
   {
     id: "B07ZPML7NP",
@@ -50,7 +53,8 @@ const sampleProducts = [
     image: "https://m.media-amazon.com/images/I/61Ww4abGclL._AC_SL1000_.jpg",
     rating: 4.8,
     price: "$149.99",
-    description: "Kindle Paperwhite – Now with a 6.8\" display and thinner borders, adjustable warm light, up to 10 weeks of battery life."
+    description: "Kindle Paperwhite – Now with a 6.8\" display and thinner borders, adjustable warm light, up to 10 weeks of battery life.",
+    category: "electronics"
   },
   {
     id: "B08TQPBMJN",
@@ -58,7 +62,8 @@ const sampleProducts = [
     image: "https://m.media-amazon.com/images/I/614w3LuZTYL._AC_SL1500_.jpg",
     rating: 4.7,
     price: "$99.99",
-    description: "Ergonomic design with ultra-fast scrolling and precise tracking on any surface, even glass."
+    description: "Ergonomic design with ultra-fast scrolling and precise tracking on any surface, even glass.",
+    category: "computers"
   },
   {
     id: "B07V4GCFP9",
@@ -66,6 +71,26 @@ const sampleProducts = [
     image: "https://m.media-amazon.com/images/I/71V1LrY1MSL._AC_SL1500_.jpg",
     rating: 4.6,
     price: "$99.95",
-    description: "9-in-1 functionality: pressure cook, slow cook, rice cooker, yogurt maker, steamer, sauté pan, yogurt maker, sterilizer and food warmer."
+    description: "9-in-1 functionality: pressure cook, slow cook, rice cooker, yogurt maker, steamer, sauté pan, yogurt maker, sterilizer and food warmer.",
+    category: "home"
+  },
+  {
+    id: "B08N5LNQCX",
+    title: "COSORI Air Fryer Oven Combo 5.8QT",
+    image: "https://m.media-amazon.com/images/I/71vOWJAzsuL._AC_SL1500_.jpg",
+    rating: 4.7,
+    price: "$119.99",
+    description: "13 functions: air fry, roast, bake, dehydrate, and more. Cook faster than a conventional oven, with less oil than deep frying.",
+    badge: "Amazon's Choice",
+    category: "home"
+  },
+  {
+    id: "B07W6NY36D",
+    title: "HP 15 Laptop, 11th Gen Intel Core i5",
+    image: "https://m.media-amazon.com/images/I/71RD3vsjIYL._AC_SL1500_.jpg",
+    rating: 4.3,
+    price: "$599.99",
+    description: "15.6\" Full HD display, 8GB RAM, 256GB SSD storage, Windows 11 Home OS, silver",
+    category: "computers"
   }
 ];

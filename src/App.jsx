@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
+import CategoryPage from "./pages/CategoryPage";
 import Reviews from "./pages/Reviews";
 import Deals from "./pages/Deals";
 import About from "./pages/About";
@@ -34,7 +35,7 @@ const App = () => (
           <Route path="/guides" element={<BuyingGuides />} />
           <Route path="/guides/:slug" element={<GuideDetail />} />
           <Route path="/compare" element={<CompareProducts />} />
-          <Route path="/category/:category" element={<NotFound />} />
+          <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<NotFound />} />
