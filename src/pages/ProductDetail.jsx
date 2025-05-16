@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Star, ArrowLeft, ArrowRight, ShoppingCart } from "lucide-react";
+import { Star, ArrowLeft, ShoppingCart } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { searchProducts } from "@/services/searchService";
@@ -35,12 +35,28 @@ const ProductDetail = () => {
             .filter(p => p.id !== id && p.category === foundProduct.category)
             .slice(0, 4);
           setRelatedProducts(related);
+          
+          // Success toast
+          toast({
+            title: "Product loaded",
+            description: `Viewing ${foundProduct.title}`,
+          });
         } else {
           setError("Product not found");
+          toast({
+            title: "Error",
+            description: "Product not found",
+            variant: "destructive",
+          });
         }
       } catch (err) {
         console.error("Error fetching product:", err);
         setError("Failed to load product. Please try again.");
+        toast({
+          title: "Error",
+          description: "Failed to load product",
+          variant: "destructive",
+        });
       } finally {
         setLoading(false);
       }
@@ -48,14 +64,8 @@ const ProductDetail = () => {
     
     if (id) {
       fetchProduct();
-      
-      // Show toast when product is loaded
-      toast({
-        title: "Product Loaded",
-        description: `Viewing product #${id}`,
-      });
     }
-  }, [id, toast]);
+  }, [id]);
 
   if (loading) {
     return (
@@ -118,7 +128,7 @@ const ProductDetail = () => {
               <Link to="/" className="hover:text-primary">Home</Link>
               <span className="mx-2">/</span>
               <Link to={`/category/${product.category}`} className="hover:text-primary">
-                {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
+                {product.category && product.category.charAt(0).toUpperCase() + product.category.slice(1)}
               </Link>
               <span className="mx-2">/</span>
               <span className="text-gray-700">{product.title}</span>

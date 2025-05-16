@@ -33,6 +33,7 @@ const ProductSearchModal = ({
     
     try {
       const searchResults = await searchProducts(searchQuery);
+      // Filter out already selected products
       const filteredResults = searchResults.filter(p => !excludedIds.includes(p.id));
       setResults(filteredResults);
     } catch (err) {

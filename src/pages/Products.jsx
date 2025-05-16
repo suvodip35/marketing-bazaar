@@ -16,6 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { toast } from "@/components/ui/use-toast";
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,30 +24,53 @@ const Products = () => {
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 8;
 
-  // Load products when search query changes
+  // Load products on initial load and when search query changes
   useEffect(() => {
     const fetchProducts = async () => {
-      if (!searchQuery) {
-        setProducts([]);
-        return;
-      }
-      
       setLoading(true);
       setError(null);
       
       try {
-        const results = await searchProducts(searchQuery);
-        setProducts(results);
+        // Always fetch all products, filter by search query if provided
+        const allProducts = await searchProducts("");
+        
+        if (searchQuery) {
+          const filteredProducts = allProducts.filter(
+            p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                 p.description.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+          setProducts(filteredProducts);
+          
+          if (filteredProducts.length === 0) {
+            toast({
+              title: "No results",
+              description: `No products found for "${searchQuery}"`,
+              variant: "default"
+            });
+          } else {
+            toast({
+              title: "Search results",
+              description: `Found ${filteredProducts.length} products for "${searchQuery}"`,
+            });
+          }
+        } else {
+          setProducts(allProducts);
+        }
       } catch (err) {
         console.error("Error searching products:", err);
         setError("Failed to load products. Please try again.");
+        toast({
+          title: "Error",
+          description: "Failed to load products",
+          variant: "destructive"
+        });
       } finally {
         setLoading(false);
       }
@@ -62,6 +86,9 @@ const Products = () => {
     e.preventDefault();
     if (localSearchQuery.trim()) {
       setSearchParams({ search: localSearchQuery });
+    } else {
+      // Clear search params if search box is empty
+      setSearchParams({});
     }
   };
 
@@ -69,7 +96,7 @@ const Products = () => {
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  const totalPages = Math.max(1, Math.ceil(products.length / productsPerPage));
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -109,7 +136,7 @@ const Products = () => {
             products={currentProducts}
             loading={loading}
             error={error}
-            emptyMessage={searchQuery ? `No products found for "${searchQuery}"` : "Enter a search term to find products"}
+            emptyMessage={searchQuery ? `No products found for "${searchQuery}"` : "No products available"}
           />
           
           {!loading && products.length > productsPerPage && (
@@ -123,16 +150,38 @@ const Products = () => {
                     />
                   </PaginationItem>
                   
-                  {Array.from({ length: totalPages }).map((_, index) => (
-                    <PaginationItem key={index}>
-                      <PaginationLink
-                        isActive={currentPage === index + 1}
-                        onClick={() => setCurrentPage(index + 1)}
-                      >
-                        {index + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
+                  {Array.from({ length: Math.min(totalPages, 5) }).map((_, index) => {
+                    let pageNum = index + 1;
+                    
+                    // Adjust page numbers for pagination with many pages
+                    if (totalPages > 5 && currentPage > 3) {
+                      if (index === 0) {
+                        pageNum = 1;
+                      } else if (index === 1) {
+                        return (
+                          <PaginationItem key="ellipsis-start">
+                            <span className="px-3 py-2">...</span>
+                          </PaginationItem>
+                        );
+                      } else {
+                        pageNum = Math.min(
+                          totalPages - (4 - index),
+                          Math.max(currentPage - 1 + (index - 2), 1)
+                        );
+                      }
+                    }
+                    
+                    return (
+                      <PaginationItem key={pageNum}>
+                        <PaginationLink
+                          isActive={currentPage === pageNum}
+                          onClick={() => setCurrentPage(pageNum)}
+                        >
+                          {pageNum}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  })}
                   
                   <PaginationItem>
                     <PaginationNext 

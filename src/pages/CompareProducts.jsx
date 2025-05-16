@@ -2,20 +2,22 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { X, Plus, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { searchProducts } from "@/services/searchService";
 import ProductSearchModal from "@/components/ui/ProductSearchModal";
 import ComparisonTable from "@/components/ui/ComparisonTable";
+import { toast } from "@/components/ui/use-toast";
 
 const CompareProducts = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const navigate = useNavigate();
   
   // Get product IDs from URL
   const productIdsParam = searchParams.get('ids');
@@ -46,20 +48,47 @@ const CompareProducts = () => {
   
   const addProductToComparison = (product) => {
     if (products.length >= 4) {
-      alert("You can compare up to 4 products at a time");
+      toast({
+        title: "Limit reached",
+        description: "You can compare up to 4 products at a time",
+        variant: "destructive"
+      });
       return;
     }
     
     if (products.some(p => p.id === product.id)) {
-      alert("This product is already in your comparison");
+      toast({
+        title: "Already added",
+        description: "This product is already in your comparison",
+        variant: "destructive"
+      });
       return;
     }
     
-    setProducts([...products, product]);
+    const newProducts = [...products, product];
+    setProducts(newProducts);
+    
+    // Update URL with new product IDs
+    const newIds = newProducts.map(p => p.id).join(',');
+    setSearchParams({ ids: newIds });
+    
+    toast({
+      title: "Product added",
+      description: "Product added to comparison",
+    });
   };
   
   const removeProductFromComparison = (productId) => {
-    setProducts(products.filter(p => p.id !== productId));
+    const newProducts = products.filter(p => p.id !== productId);
+    setProducts(newProducts);
+    
+    // Update URL with new product IDs
+    if (newProducts.length > 0) {
+      const newIds = newProducts.map(p => p.id).join(',');
+      setSearchParams({ ids: newIds });
+    } else {
+      setSearchParams({});
+    }
   };
 
   return (

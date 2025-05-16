@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const ProductGrid = ({ products, loading, error, emptyMessage = "No products found" }) => {
   // Function to render skeleton placeholders during loading
   const renderSkeletons = () => {
-    return Array(4).fill(0).map((_, i) => (
+    return Array(8).fill(0).map((_, i) => (
       <div key={i} className="flex flex-col space-y-3">
         <Skeleton className="h-48 w-full rounded-md" />
         <div className="space-y-2">

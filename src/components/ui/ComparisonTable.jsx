@@ -3,7 +3,7 @@ import React from "react";
 import { CheckCircle2, XCircle } from "lucide-react";
 
 const ComparisonTable = ({ products }) => {
-  // Generate random specs for demonstration
+  // Generate specs for demonstration
   const generateSpecs = (product) => {
     // Use product ID to generate somewhat consistent "random" values
     const idSum = product.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
