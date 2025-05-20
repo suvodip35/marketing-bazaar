@@ -13,6 +13,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { products } from './sampleData';
 
 /**
  * Fetches product details by ID
@@ -26,8 +27,7 @@ export const getProductById = async (id) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       // Sample data lookup by ID
-      const allProducts = require('./sampleData').products;
-      const product = allProducts.find(p => p.id === id);
+      const product = products.find(p => p.id === id);
       
       if (product) {
         resolve(product);
@@ -49,8 +49,7 @@ export const getProductsByCategory = async (category) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       // Sample product data filtered by category
-      const allProducts = require('./sampleData').products;
-      const filteredProducts = allProducts.filter(
+      const filteredProducts = products.filter(
         p => p.category && p.category.toLowerCase() === category.toLowerCase()
       );
       resolve(filteredProducts);
@@ -69,8 +68,7 @@ export const getFeaturedProducts = async (limit = 4) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       // Sample featured products (would normally be determined by algorithm)
-      const allProducts = require('./sampleData').products;
-      const featured = allProducts.filter(p => p.badge === "Best Seller" || p.rating >= 4.5);
+      const featured = products.filter(p => p.badge === "Best Seller" || p.rating >= 4.5);
       resolve(featured.slice(0, limit));
     }, 500);
   });
@@ -123,8 +121,7 @@ export const useDeals = (limit = 3) => {
         setLoading(true);
         // In a real app, this would be a separate API call
         // For now, we'll just filter products with a discount
-        const allProducts = require('./sampleData').products;
-        const dealsData = allProducts
+        const dealsData = products
           .filter(p => p.discount) // Only products with discount
           .slice(0, limit);
         

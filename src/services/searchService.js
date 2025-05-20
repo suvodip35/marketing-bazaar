@@ -1,6 +1,6 @@
 
 // Import sample data
-const { products } = require('./sampleData');
+import { products } from './sampleData';
 
 /**
  * Searches products based on query
