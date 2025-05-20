@@ -12,6 +12,8 @@
  * @property {string} [category] - Product category
  */
 
+import { useState, useEffect } from 'react';
+
 /**
  * Fetches product details by ID
  * @param {string} id - Product ID
@@ -74,3 +76,70 @@ export const getFeaturedProducts = async (limit = 4) => {
   });
 };
 
+/**
+ * React hook for fetching featured products
+ * @param {number} limit - Maximum number of products to return
+ * @returns {Object} - { products, loading, error }
+ */
+export const useFeaturedProducts = (limit = 4) => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await getFeaturedProducts(limit);
+        setProducts(data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching featured products:", err);
+        setError("Failed to load featured products. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, [limit]);
+
+  return { products, loading, error };
+};
+
+/**
+ * React hook for fetching deals
+ * @param {number} limit - Maximum number of deals to return
+ * @returns {Object} - { deals, loading, error }
+ */
+export const useDeals = (limit = 3) => {
+  const [deals, setDeals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDeals = async () => {
+      try {
+        setLoading(true);
+        // In a real app, this would be a separate API call
+        // For now, we'll just filter products with a discount
+        const allProducts = require('./sampleData').products;
+        const dealsData = allProducts
+          .filter(p => p.discount) // Only products with discount
+          .slice(0, limit);
+        
+        setDeals(dealsData);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching deals:", err);
+        setError("Failed to load deals. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDeals();
+  }, [limit]);
+
+  return { deals, loading, error };
+};
