@@ -10,6 +10,9 @@ const { products } = require('./sampleData');
 export const searchProducts = async (query) => {
   // In production, this would be a call to your backend API
   // that interfaces with Amazon PA API or your product database
+  // Example API call:
+  // return fetch('/api/products/search?q=' + encodeURIComponent(query))
+  //   .then(response => response.json())
   
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -30,4 +33,23 @@ export const searchProducts = async (query) => {
       resolve(results);
     }, 500); // Simulate network delay
   });
+};
+
+/**
+ * This is a placeholder for the Amazon PA API integration
+ * In a production environment, this would be implemented as a backend service
+ * for security reasons (to protect API credentials)
+ * 
+ * @param {string} query - Search query for Amazon products
+ * @returns {Promise<Array>} - Matching Amazon products
+ */
+export const searchAmazonProducts = async (query) => {
+  // This would be implemented in a backend service
+  // The frontend would call your backend API, not Amazon's API directly
+  
+  console.log("Amazon PA API search would be called with:", query);
+  console.log("Security note: Never expose Amazon PA API credentials in frontend code");
+  
+  // For development, return sample data
+  return searchProducts(query);
 };
