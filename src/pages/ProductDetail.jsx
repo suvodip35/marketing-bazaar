@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
@@ -23,17 +22,24 @@ const ProductDetail = () => {
       setError(null);
       
       try {
-        // In a real app, this would be an API call to your backend
+        // Get all products and find the one with matching ID
         const allProducts = await searchProducts("");
         const foundProduct = allProducts.find(p => p.id === id);
         
         if (foundProduct) {
           setProduct(foundProduct);
           
-          // Get related products - in real app this would be a recommendation API
-          const related = allProducts
-            .filter(p => p.id !== id && p.category === foundProduct.category)
-            .slice(0, 4);
+          // Get related products from the same category if available
+          let related = [];
+          if (foundProduct.category) {
+            related = allProducts.filter(
+              p => p.id !== id && p.category === foundProduct.category
+            ).slice(0, 4);
+          } else {
+            // Fallback to some other products if no category match
+            related = allProducts.filter(p => p.id !== id).slice(0, 4);
+          }
+          
           setRelatedProducts(related);
           
           // Success toast
@@ -127,11 +133,17 @@ const ProductDetail = () => {
             <div className="flex items-center text-sm text-gray-500">
               <Link to="/" className="hover:text-primary">Home</Link>
               <span className="mx-2">/</span>
-              <Link to={`/category/${product.category}`} className="hover:text-primary">
-                {product.category && product.category.charAt(0).toUpperCase() + product.category.slice(1)}
-              </Link>
+              {product?.category && (
+                <>
+                  <Link to={`/category/${product.category}`} className="hover:text-primary">
+                    {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
+                  </Link>
+                  <span className="mx-2">/</span>
+                </>
+              )}
+              <Link to="/products" className="hover:text-primary">Products</Link>
               <span className="mx-2">/</span>
-              <span className="text-gray-700">{product.title}</span>
+              <span className="text-gray-700">{product?.title}</span>
             </div>
           </div>
           

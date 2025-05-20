@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
@@ -31,40 +30,30 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 8;
 
-  // Load products on initial load and when search query changes
+  // Load ALL products on initial load, filter only when search query changes
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
       
       try {
-        // Always fetch all products, filter by search query if provided
-        const allProducts = await searchProducts("");
+        const allProducts = await searchProducts(searchQuery);
+        setProducts(allProducts);
         
-        if (searchQuery) {
-          const filteredProducts = allProducts.filter(
-            p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                 p.description.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-          setProducts(filteredProducts);
-          
-          if (filteredProducts.length === 0) {
-            toast({
-              title: "No results",
-              description: `No products found for "${searchQuery}"`,
-              variant: "default"
-            });
-          } else {
-            toast({
-              title: "Search results",
-              description: `Found ${filteredProducts.length} products for "${searchQuery}"`,
-            });
-          }
-        } else {
-          setProducts(allProducts);
+        if (searchQuery && allProducts.length === 0) {
+          toast({
+            title: "No results",
+            description: `No products found for "${searchQuery}"`,
+            variant: "default"
+          });
+        } else if (searchQuery) {
+          toast({
+            title: "Search results",
+            description: `Found ${allProducts.length} products for "${searchQuery}"`,
+          });
         }
       } catch (err) {
-        console.error("Error searching products:", err);
+        console.error("Error loading products:", err);
         setError("Failed to load products. Please try again.");
         toast({
           title: "Error",
@@ -136,7 +125,7 @@ const Products = () => {
             products={currentProducts}
             loading={loading}
             error={error}
-            emptyMessage={searchQuery ? `No products found for "${searchQuery}"` : "No products available"}
+            emptyMessage={products.length === 0 ? "No products available" : ""}
           />
           
           {!loading && products.length > productsPerPage && (

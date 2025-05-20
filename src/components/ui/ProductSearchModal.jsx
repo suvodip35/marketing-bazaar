@@ -23,10 +23,33 @@ const ProductSearchModal = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
+  // Load initial products when modal opens
+  React.useEffect(() => {
+    if (isOpen) {
+      handleInitialSearch();
+    }
+  }, [isOpen]);
+  
+  const handleInitialSearch = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // Get all products initially
+      const allProducts = await searchProducts("");
+      // Filter out already selected products
+      const filteredResults = allProducts.filter(p => !excludedIds.includes(p.id));
+      setResults(filteredResults);
+    } catch (err) {
+      console.error("Error loading products:", err);
+      setError("Failed to load products. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   const handleSearch = async (e) => {
     e.preventDefault();
-    
-    if (!searchQuery.trim()) return;
     
     setLoading(true);
     setError(null);
@@ -102,10 +125,10 @@ const ProductSearchModal = ({
                 </li>
               ))}
             </ul>
-          ) : searchQuery ? (
-            <p className="text-center py-8 text-gray-500">No products found. Try a different search term.</p>
           ) : (
-            <p className="text-center py-8 text-gray-500">Search for products to add to comparison</p>
+            <p className="text-center py-8 text-gray-500">
+              {searchQuery ? "No products found. Try a different search term." : "No products found to add to comparison"}
+            </p>
           )}
         </div>
       </DialogContent>

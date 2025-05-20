@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -25,19 +24,49 @@ const CompareProducts = () => {
   
   useEffect(() => {
     const fetchProducts = async () => {
-      if (productIds.length === 0) return;
+      if (productIds.length === 0) {
+        setProducts([]);
+        return;
+      }
       
       setLoading(true);
       setError(null);
       
       try {
-        // In a real implementation, this would fetch specific products by ID
         const allProducts = await searchProducts("");
         const foundProducts = allProducts.filter(p => productIds.includes(p.id));
-        setProducts(foundProducts);
+        
+        if (foundProducts.length === 0 && productIds.length > 0) {
+          setError("Could not find the specified products for comparison.");
+          toast({
+            title: "Products not found",
+            description: "The products you're trying to compare could not be found",
+            variant: "destructive"
+          });
+        } else if (foundProducts.length < productIds.length) {
+          setProducts(foundProducts);
+          toast({
+            title: "Some products missing",
+            description: "Some of the products you're trying to compare could not be found",
+            variant: "destructive"
+          });
+        } else {
+          setProducts(foundProducts);
+          if (foundProducts.length > 1) {
+            toast({
+              title: "Products loaded",
+              description: `Comparing ${foundProducts.length} products`,
+            });
+          }
+        }
       } catch (err) {
         console.error("Error fetching products:", err);
         setError("Failed to load products for comparison. Please try again.");
+        toast({
+          title: "Error",
+          description: "Failed to load products for comparison",
+          variant: "destructive"
+        });
       } finally {
         setLoading(false);
       }
