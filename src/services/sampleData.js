@@ -1,6 +1,6 @@
 
 // Sample product data for the application
-exports.products = [
+export const products = [
   {
     id: "B09G9FPHY6",
     title: "Apple AirPods Pro (2nd Generation) Wireless Earbuds",
@@ -95,7 +95,7 @@ exports.products = [
   },
   {
     id: "B08PF1VTMK",
-    title: "LG OLED C1 Series 65" Alexa Built-in 4k Smart TV",
+    title: "LG OLED C1 Series 65\" Alexa Built-in 4k Smart TV",
     image: "https://m.media-amazon.com/images/I/91uY3VZ4zrL._AC_SL1500_.jpg",
     rating: 4.8,
     price: "$1,596.99",
@@ -142,7 +142,7 @@ exports.products = [
   }
 ];
 
-exports.categories = [
+export const categories = [
   {
     id: "electronics",
     name: "Electronics",
@@ -181,7 +181,7 @@ exports.categories = [
   }
 ];
 
-exports.reviews = [
+export const reviews = [
   {
     id: "r1",
     productId: "B09G9FPHY6",
